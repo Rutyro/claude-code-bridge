@@ -7,7 +7,7 @@ Stdlib only. MCP over stdio (newline-delimited JSON-RPC 2.0).
 Config  ~/.cc-peer.json        (peers, per-peer settings)
 State   ~/.cc-peer-state.json  (conversation id per peer)
 
-Self-check:  python server.py --self-test
+Self-check:  cc-peer --self-test
 """
 
 from __future__ import annotations
@@ -502,7 +502,11 @@ def self_test() -> int:
     return 0
 
 
-if __name__ == "__main__":
+def main() -> None:
     if "--self-test" in sys.argv:
         raise SystemExit(self_test())
     serve()
+
+
+if __name__ == "__main__":
+    main()

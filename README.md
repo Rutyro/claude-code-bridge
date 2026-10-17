@@ -2,11 +2,11 @@
 
 A small MCP server that lets one coding-agent session message another machine's session over plain SSH, and get the reply back. No cloud relay, no shared account, no extra API keys.
 
-The internal name is `cc-peer`; this repository is its public home.
+The internal name is `cc-peer`; this repository is its public home. It is published on PyPI as `claude-code-bridge-mcp`.
 
 ```
  ┌────────────────────┐      stdio (MCP)      ┌────────────┐      ssh      ┌──────────────────┐
- │  agent (host)      │ ◄───────────────────► │  server.py │ ────────────► │  agent -p        │
+ │  agent (host)      │ ◄───────────────────► │  cc_peer.py│ ────────────► │  agent -p        │
  │  list_peers /      │                       │  (local)   │ [--resume]    │  (remote machine)│
  │  send_message      │                       └────────────┘               └──────────────────┘
  └────────────────────┘
@@ -18,6 +18,20 @@ Cross-session messaging between machines is often tied to a cloud account or a s
 
 Each peer keeps its own conversation history: the bridge stores the remote session id and resumes it on the next message. It only starts a fresh session when the old one is provably gone. A network error never silently drops the history.
 
+## Install
+
+```bash
+pipx install claude-code-bridge-mcp
+```
+
+or run it without installing:
+
+```bash
+uvx claude-code-bridge-mcp
+```
+
+From source: `python cc_peer.py`.
+
 ## Features
 
 - MCP over stdio - works with any MCP-capable client. Single file, Python standard library only.
@@ -25,14 +39,13 @@ Each peer keeps its own conversation history: the bridge stores the remote sessi
 - `send_message` - sends a message, returns the reply, and keeps the conversation going across calls.
 - Session resume with stale-session detection and safe retry.
 - Windows-aware - correct quoting for both POSIX (`sh`) and Windows (`cmd`) peers.
-- Built-in self-test: `python server.py --self-test`.
+- Built-in self-test: `cc-peer --self-test`.
 
 ## Quickstart
 
 Requirements: Python 3.11+, the same agent CLI on both machines, and SSH key auth to the peer (`BatchMode`-friendly).
 
-1. Copy `server.py` somewhere local.
-2. Create `~/.cc-peer.json` (or start from `examples/cc-peer.example.json`):
+1. Create `~/.cc-peer.json` (or start from `examples/cc-peer.example.json`):
 
 ```json
 {
@@ -56,20 +69,22 @@ Requirements: Python 3.11+, the same agent CLI on both machines, and SSH key aut
 - `command` - the remote CLI to run. It must accept `-p`, `--session-id <id>` and `--resume <id>`.
 - `args` - optional extra arguments for that command.
 
-3. Register the server with your MCP client:
+2. Register the server with your MCP client. With `uvx`:
 
 ```json
 {
   "mcpServers": {
     "cc-peer": {
-      "command": "python",
-      "args": ["/path/to/server.py"]
+      "command": "uvx",
+      "args": ["claude-code-bridge-mcp"]
     }
   }
 }
 ```
 
-4. Try it from the client:
+After `pipx install`, use `"command": "cc-peer"` with no args instead.
+
+3. Try it from the client:
 
 ```
 list_peers()
