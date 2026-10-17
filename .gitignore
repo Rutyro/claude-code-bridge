@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+cc-peer-state.json
+cc-peer.json
+sessions/
+.venv/
+Thumbs.db
+Desktop.ini

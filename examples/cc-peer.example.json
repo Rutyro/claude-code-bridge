@@ -1,0 +1,13 @@
+{
+  "peers": {
+    "my-server": {
+      "ssh": "my-server",
+      "shell": "sh",
+      "cwd": "",
+      "command": "agent",
+      "args": [],
+      "ssh_args": ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10"],
+      "timeout": 600
+    }
+  }
+}
