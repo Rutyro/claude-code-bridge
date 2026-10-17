@@ -21,16 +21,16 @@ Each peer keeps its own conversation history: the bridge stores the remote sessi
 ## Install
 
 ```bash
-pipx install claude-code-bridge-mcp
+pipx install claude-code-bridge-mcp==1.0.0
 ```
 
 or run it without installing:
 
 ```bash
-uvx claude-code-bridge-mcp
+uvx claude-code-bridge-mcp==1.0.0
 ```
 
-From source: `python cc_peer.py`.
+Pin the version in client configs and bump it deliberately. To audit exactly what you run, install from source: `python cc_peer.py`.
 
 ## Features
 
@@ -76,7 +76,7 @@ Requirements: Python 3.11+, the same agent CLI on both machines, and SSH key aut
   "mcpServers": {
     "cc-peer": {
       "command": "uvx",
-      "args": ["claude-code-bridge-mcp"]
+      "args": ["claude-code-bridge-mcp==1.0.0"]
     }
   }
 }
